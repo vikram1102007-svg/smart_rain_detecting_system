@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Rain Detection Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="dashboard">
+    <section class="dashboard-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Smart Weather Monitoring</p>
+          <h1>Smart Rain Detection Dashboard</h1>
+          <p class="hero-text">
+            Live environmental monitoring from the ESP32 with rain alerts, temperature,
+            humidity, and pump status in one responsive control panel.
+          </p>
+        </div>
+
+        <div class="hero-panel">
+          <div class="status-pill">
+            <span id="statusDot" class="status-dot"></span>
+            <span id="statusText">Connecting to ESP32...</span>
+          </div>
+
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <span class="mini-label">API Endpoint</span>
+              <span class="mini-value">192.168.137.117</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-label">Refresh Rate</span>
+              <span class="mini-value">2 Seconds</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="alertBox" class="alert hidden" aria-live="polite">
+        <div class="alert-icon">!</div>
+        <div>
+          <h2>Heavy Rain Alert</h2>
+          <p>Rain intensity is high. Check the system and water flow conditions immediately.</p>
+        </div>
+      </section>
+
+      <section class="cards-grid">
+        <article class="card featured-card">
+          <div class="card-top">
+            <div>
+              <p class="card-label">Rain Level</p>
+              <h2 id="rainValue" class="card-value rain-badge rain-no-rain">No Rain</h2>
+            </div>
+            <div class="card-icon rain-icon">&#9729;</div>
+          </div>
+          <p class="card-note">Rainfall classification detected by the rain sensor module.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <p class="card-label">Temperature</p>
+              <h2 id="tempValue" class="card-value">--&deg;C</h2>
+            </div>
+            <div class="card-icon temp-icon">&#176;</div>
+          </div>
+          <p class="card-note">Current ambient temperature near the monitored area.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <p class="card-label">Humidity</p>
+              <h2 id="humValue" class="card-value">--%</h2>
+            </div>
+            <div class="card-icon hum-icon">&#8776;</div>
+          </div>
+          <p class="card-note">Relative humidity percentage captured from the environment.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <p class="card-label">Pump Status</p>
+              <h2 id="pumpValue" class="card-value pump-off">OFF</h2>
+            </div>
+            <div class="card-icon pump-icon">&#9673;</div>
+          </div>
+          <p class="card-note">Automatic pump control state responding to rainfall conditions.</p>
+        </article>
+      </section>
+
+      <footer class="dashboard-footer">
+        <p>Last Updated</p>
+        <span id="lastUpdated">Waiting for data...</span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Rain Detection System Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-dark">
+  <div class="background-grid"></div>
+  <div class="rain-particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="aurora aurora-a"></div>
+  <div class="aurora aurora-b"></div>
+
+  <div class="dashboard-shell">
+    <aside class="sidebar glass-card">
+      <div class="brand-panel">
+        <div class="brand-mark">
+          <span></span>
+        </div>
+        <div>
+          <p class="eyebrow">ESP32 Powered</p>
+          <h1>Rain Sentinel Pro</h1>
+          <p class="muted">Smart Rain Detection System using ESP32 + LDR + DHT11 + Laser + LEDs + Pump</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section glass-subcard">
+        <p class="section-kicker">Live Endpoint</p>
+        <code id="apiUrlLabel">http://ESP32_IP/data</code>
+      </div>
+
+      <div class="sidebar-section glass-subcard status-panel" id="connectionPanel">
+        <div class="status-header">
+          <div class="status-badge">
+            <span class="sensor-radar" aria-hidden="true">
+              <span class="radar-ring ring-a"></span>
+              <span class="radar-ring ring-b"></span>
+              <span class="status-dot"></span>
+            </span>
+            <span id="connectionText">Connecting to ESP32</span>
+          </div>
+          <div class="signal-bars" id="signalBars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <p class="status-note" id="connectionNote">Attempting live API communication with the sensor node.</p>
+      </div>
+
+      <div class="sidebar-section glass-subcard">
+        <p class="section-kicker">Clock and Location</p>
+        <div class="clock-stack">
+          <strong id="liveClock">--:--:--</strong>
+          <span id="liveDateLocation">Locating system</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <p>Designed for project presentation, monitoring, and viva demonstration.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar glass-card">
+        <div>
+          <p class="eyebrow">Premium IoT Monitoring Dashboard</p>
+          <h2>Smart Rain Detection Control Center</h2>
+          <p class="muted">Live environmental telemetry, predictive weather visualization, and automated pump insight.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="inline-stat glass-subcard">
+            <span class="inline-label">Last Update</span>
+            <strong id="lastUpdated">Waiting for device response...</strong>
+          </div>
+          <div class="inline-stat glass-subcard">
+            <span class="inline-label">Buffer</span>
+            <strong id="readingCount">0 / 10</strong>
+          </div>
+          <button class="theme-toggle glass-subcard" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span id="themeToggleLabel">Dark</span>
+            <div class="toggle-track">
+              <div class="toggle-thumb"></div>
+            </div>
+            <span>Light</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="hero-section glass-card" id="weatherScene">
+        <div class="hero-copy">
+          <p class="eyebrow">Weather Animation Engine</p>
+          <h3 id="weatherTitle">Clear Sky Condition</h3>
+          <p class="hero-text" id="weatherDescription">
+            No rain detected. System remains in observation mode with stable ambient conditions.
+          </p>
+          <div class="hero-tags">
+            <span class="hero-tag" id="rainBadge">No Rain</span>
+            <span class="hero-tag accent-tag" id="lastHeavyRain">Last Heavy Rain Detected at --:--:--</span>
+          </div>
+        </div>
+
+        <div class="weather-stage" aria-hidden="true">
+          <div class="weather-glow"></div>
+          <div class="sun-core"></div>
+          <div class="cloud cloud-main"></div>
+          <div class="cloud cloud-small"></div>
+          <div class="rain-layer rain-light">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="rain-layer rain-heavy">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="lightning"></div>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="info-card metric-card rain-card glass-card" id="rainCard">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Rain Level</p>
+              <h3 id="rainValue">--</h3>
+            </div>
+            <div class="status-pill" id="rainStatusPill">
+              <span class="pulse-dot"></span>
+              <span id="rainStatusText">Monitoring</span>
+            </div>
+          </div>
+          <p class="card-detail" id="rainCaption">Monitoring precipitation conditions...</p>
+        </article>
+
+        <article class="info-card metric-card glass-card">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Temperature</p>
+              <h3><span id="tempValue">0</span><span class="unit">&deg;C</span></h3>
+            </div>
+            <div class="mini-orb thermo-orb">TEMP</div>
+          </div>
+          <div class="metric-track">
+            <div class="metric-progress" id="tempBar"></div>
+          </div>
+          <p class="card-detail">Real-time thermal trend from the DHT11 sensor.</p>
+        </article>
+
+        <article class="info-card metric-card humidity-card glass-card">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Humidity</p>
+              <h3 id="humValueWrap"><span id="humValue">0</span><span class="unit">%</span></h3>
+            </div>
+            <div class="humidity-gauge">
+              <svg viewBox="0 0 120 120" class="humidity-svg">
+                <circle class="gauge-base" cx="60" cy="60" r="48"></circle>
+                <circle class="gauge-progress" id="humidityProgress" cx="60" cy="60" r="48"></circle>
+              </svg>
+              <div class="gauge-center">
+                <strong id="humidityPercent">0%</strong>
+                <span>Humidity</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-detail">Animated circular moisture meter with live percentage feedback.</p>
+        </article>
+
+        <article class="info-card metric-card pump-card glass-card" id="pumpCard">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Pump Status</p>
+              <h3 id="pumpValue">OFF</h3>
+            </div>
+            <div class="pump-visual" id="pumpVisual">
+              <div class="pump-core">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3 8 8h3v4H6v4h5v5h2v-5h5v-4h-5V8h3z"></path>
+                </svg>
+              </div>
+              <div class="pump-wave-field" aria-hidden="true">
+                <span class="pump-wave wave-1"></span>
+                <span class="pump-wave wave-2"></span>
+                <span class="pump-wave wave-3"></span>
+              </div>
+              <div class="water-flow">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+          <label class="pump-toggle glass-subcard" aria-label="Pump status indicator">
+            <input type="checkbox" id="pumpToggle" disabled />
+            <span class="pump-slider"></span>
+          </label>
+          <p class="card-detail" id="pumpCaption">Pump is currently idle.</p>
+        </article>
+
+        <article class="info-card wide-card glass-card">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Rain History Graph</p>
+              <h3>Rain Intensity vs Time</h3>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="rainChart"></canvas>
+          </div>
+        </article>
+
+        <article class="info-card wide-card glass-card">
+          <div class="card-header">
+            <div>
+              <p class="section-kicker">Temperature Trend Graph</p>
+              <h3>Live Temperature Trend</h3>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="tempChart"></canvas>
+          </div>
+        </article>
+      </section>
+
+      <footer class="dashboard-footer glass-card">
+        <p>Smart IoT Rain Monitoring System | ESP32 Powered</p>
+      </footer>
+    </main>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader-card glass-card">
+      <div class="loader-ring"></div>
+      <h3>Connecting to ESP32...</h3>
+      <p>Preparing live telemetry, weather animation, and analytics widgets.</p>
+    </div>
+  </div>
+
+  <div class="alert-popup" id="alertPopup" role="alert" aria-live="assertive">
+    <div class="alert-border"></div>
+    <div class="alert-body">
+      <p class="alert-title">Critical Weather Alert</p>
+      <p class="alert-text">&#9888; Heavy Rain Detected! Pump Activated</p>
+    </div>
+    <button class="alert-close" id="closeAlert" type="button" aria-label="Close alert">&times;</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
